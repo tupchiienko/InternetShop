@@ -1,12 +1,24 @@
 package service;
 
-public interface UserService {
+import model.Response;
+import model.User;
 
-    /**
-     * Used to login a user
-     * @param username user name
-     * @param password user password
-     * @return outcome of login - success or not
-     */
-    boolean login(String username, String password);
+public interface UserService {
+    Response<Integer> login(String username, String password);
+
+    Response<Integer> register(String username, String password);
+
+    Response<User> getUserById(int id);
+
+    Response<User> getUserByUsername(String username);
+
+    Response<User> removeUser(int id);
+
+    Response<User> blockUser(int id);
+
+    Response<User> unblockUser(int id);
+
+    Response<User> changeUsername(int id, String username);
+
+    Response<User> changePassword(int id, String username);
 }
