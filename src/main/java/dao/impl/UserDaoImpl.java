@@ -4,8 +4,11 @@ import dao.UserDao;
 import model.User;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static java.util.stream.Collectors.toList;
 
 public class UserDaoImpl implements UserDao {
     Map<Integer, User> userDao = new HashMap<>();
@@ -16,10 +19,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> getUser(String username) {
-        if (userDao.containsValue(username)){}
-
-        return Optional.empty();
+    public List<User> getUser(String username) {
+        return  userDao.values()
+                .stream()
+                .filter(i -> i.getUserName().equals(username))
+                .collect(toList());
     }
 
     @Override

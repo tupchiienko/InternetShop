@@ -2,12 +2,13 @@ package dao;
 
 import model.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserDao {
     void addUser(User user);
 
-    Optional<User> getUser(String username);
+    List<User> getUser(String username);
 
     Optional<User> getUser(int id);
 
