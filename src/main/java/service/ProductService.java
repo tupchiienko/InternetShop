@@ -1,18 +1,20 @@
 package service;
 
 import model.Product;
-import model.Response;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public interface ProductService {
-    Response<Product> getProductByName(String name);
+    Response<Product> getProduct(String name);
 
-    Response<Product> getProductById(int id);
+    Response<Product> getProduct(int id);
+
+    Response<Map<Integer, Product>> getAllProducts();
 
     Response<Product> addProduct(Product product);
 
-    Response<Product> removeProduct(int id);
+    Response<Product> deleteProduct(int id);
 
     Response<Product> changeProductName(int id, String name);
 

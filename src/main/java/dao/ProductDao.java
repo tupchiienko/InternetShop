@@ -2,16 +2,19 @@ package dao;
 
 import model.Product;
 
+import java.util.Map;
 import java.util.Optional;
 
 public interface ProductDao {
-    Optional<Product> addProduct(Product product);
+    Optional<Product> add(Product product);
 
-    Optional<Product> getProduct(int id);
+    Optional<Product> getById(int id);
 
-    Optional<Product> getProduct(String productName);
+    Optional<Product> getByName(String productName);
 
-    Optional<Product> updateProduct(int id);
+    Optional<Product> update(int id);
 
-    Optional<Product> deleteProduct(int id);
+    Optional<Product> delete(int id);
+
+    Map<Integer, Product> getAllProducts();
 }

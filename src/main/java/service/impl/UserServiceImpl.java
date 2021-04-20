@@ -1,53 +1,60 @@
 package service.impl;
 
-import model.Response;
+import model.UserRole;
+import service.Response;
 import model.User;
 import service.UserService;
 
+import java.util.Map;
+
 public class UserServiceImpl implements UserService {
-
     @Override
-    public Response<Integer> login(String username, String password) {
+    public Response<User> login(String username, String password) {
         return null;
     }
 
     @Override
-    public Response<Integer> register(String username, String password) {
+    public Response<User> register(String username, String password) {
         return null;
     }
 
     @Override
-    public Response<User> getUserById(int id) {
+    public Response<User> getUser(String username) {
         return null;
     }
 
     @Override
-    public Response<User> getUserByUsername(String username) {
+    public Response<Map<String, User>> getAllUsers() {
         return null;
     }
 
     @Override
-    public Response<User> removeUser(int id) {
+    public Response<Map<String, User>> getAllUsersByRole(UserRole userRole) {
         return null;
     }
 
     @Override
-    public Response<User> blockUser(int id) {
+    public Response<User> deleteUser(String username) {
         return null;
     }
 
     @Override
-    public Response<User> unblockUser(int id) {
+    public Response<User> blockUser(String username) {
         return null;
     }
 
     @Override
-    public Response<User> changeUsername(int id, String username) {
+    public Response<User> unblockUser(String username) {
         return null;
     }
 
     @Override
-    public Response<User> changePassword(int id, String username) {
+    public Response<User> changeUsername(String username, String newUsername) {
+        return null;
+    }
+
+    @Override
+    public Response<User> changePassword(String username, String newPassword) {
         return null;
     }
 }

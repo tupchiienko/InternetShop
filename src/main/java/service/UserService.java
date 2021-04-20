@@ -1,24 +1,28 @@
 package service;
 
-import model.Response;
 import model.User;
+import model.UserRole;
+
+import java.util.Map;
 
 public interface UserService {
-    Response<Integer> login(String username, String password);
+    Response<User> login(String username, String password);
 
-    Response<Integer> register(String username, String password);
+    Response<User> register(String username, String password);
 
-    Response<User> getUserById(int id);
+    Response<User> getUser(String username);
 
-    Response<User> getUserByUsername(String username);
+    Response<Map<String, User>> getAllUsers();
 
-    Response<User> removeUser(int id);
+    Response<Map<String, User>> getAllUsersByRole(UserRole userRole);
 
-    Response<User> blockUser(int id);
+    Response<User> deleteUser(String username);
 
-    Response<User> unblockUser(int id);
+    Response<User> blockUser(String username);
 
-    Response<User> changeUsername(int id, String username);
+    Response<User> unblockUser(String username);
 
-    Response<User> changePassword(int id, String username);
+    Response<User> changeUsername(String username, String newUsername);
+
+    Response<User> changePassword(String username, String newPassword);
 }
