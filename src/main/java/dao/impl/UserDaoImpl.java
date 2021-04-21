@@ -11,16 +11,16 @@ import java.util.Optional;
 import static java.util.stream.Collectors.toList;
 
 public class UserDaoImpl implements UserDao {
-    Map<Integer, User> userDao = new HashMap<>();
+    Map<Integer, User> userMap = new HashMap<>();
 
     @Override
     public void addUser(User user) {
-        userDao.put(user.getId(),user);
+        userMap.put(user.getId(), user);
     }
 
     @Override
     public List<User> getUser(String username) {
-        return  userDao.values()
+        return userMap.values()
                 .stream()
                 .filter(i -> i.getUserName().equals(username))
                 .collect(toList());
@@ -28,16 +28,16 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> getUser(int id) {
-        if (userDao.containsKey(id)) {
-            return Optional.ofNullable(userDao.get(id));
+        if (userMap.containsKey(id)) {
+            return Optional.ofNullable(userMap.get(id));
         }
         return Optional.empty();
     }
 
     @Override
     public boolean updateUser(int id, User newUser) {
-        if (userDao.containsKey(id)) {
-            userDao.replace(id, newUser);
+        if (userMap.containsKey(id)) {
+            userMap.replace(id, newUser);
             return true;
         }
         return false;
@@ -45,8 +45,8 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public boolean deleteUser(int id) {
-        if (userDao.containsKey(id)) {
-            userDao.remove(id);
+        if (userMap.containsKey(id)) {
+            userMap.remove(id);
             return true;
         }
         return false;
