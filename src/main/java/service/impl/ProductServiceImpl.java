@@ -1,19 +1,25 @@
 package service.impl;
 
 import model.Product;
-import model.Response;
+import service.Response;
 import service.ProductService;
 
 import java.math.BigDecimal;
+import java.util.Map;
 
 public class ProductServiceImpl implements ProductService {
     @Override
-    public Response<Product> getProductByName(String name) {
+    public Response<Product> getProduct(String name) {
         return null;
     }
 
     @Override
-    public Response<Product> getProductById(int id) {
+    public Response<Product> getProduct(int id) {
+        return null;
+    }
+
+    @Override
+    public Response<Map<Integer, Product>> getAllProducts() {
         return null;
     }
 
@@ -23,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response<Product> removeProduct(int id) {
+    public Response<Product> deleteProduct(int id) {
         return null;
     }
 

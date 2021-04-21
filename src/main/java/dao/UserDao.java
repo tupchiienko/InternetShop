@@ -1,18 +1,21 @@
 package dao;
 
 import model.User;
+import model.UserRole;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UserDao {
-    void addUser(User user);
+    Optional<User> add(User user);
 
-    List<User> getUser(String username);
+    Optional<User> getByUsername(String username);
 
-    Optional<User> getUser(int id);
+    Optional<User> update(String username, User newUser);
 
-    boolean updateUser(int id, User newUser);
+    Optional<User> delete(String username);
 
-    boolean deleteUser(int id);
+    Map<String, User> getByRole(UserRole userRole);
+
+    Map<String, User> getAllUsers();
 }
