@@ -1,4 +1,4 @@
-package model;
+package service;
 
 public class Response<T> {
     private final T value;
