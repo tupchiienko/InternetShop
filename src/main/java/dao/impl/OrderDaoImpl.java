@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.OrderDao;
+import exception.OrderDataException;
 import model.Order;
 import model.User;
 
@@ -19,7 +20,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<Order> update(int id, Order newOrder) {
+    public Optional<Order> update(int id, Order newOrder) throws OrderDataException {
         return Optional.empty();
     }
 

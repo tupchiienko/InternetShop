@@ -5,14 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Order {
-    private final int id;
+    private int id;
     private final User user;
     private final Map<Product, Integer> productMap;
     private BigDecimal totalPrice;
     private OrderStatus orderStatus;
 
     public Order(User user) {
-        this.id = 0;
         this.user = user;
         this.productMap = new HashMap<>();
         calculateTotalPrice();
@@ -21,6 +20,10 @@ public class Order {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public User getUser() {

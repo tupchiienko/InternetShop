@@ -1,6 +1,7 @@
 package dao.impl;
 
 import dao.UserDao;
+import exception.UserDataException;
 import model.User;
 import model.UserRole;
 
@@ -9,7 +10,7 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
     @Override
-    public Optional<User> add(User user) {
+    public Optional<User> add(User user) throws UserDataException {
         return Optional.empty();
     }
 
@@ -19,7 +20,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> update(String username, User newUser) {
+    public Optional<User> update(String username, User newUser) throws UserDataException {
         return Optional.empty();
     }
 

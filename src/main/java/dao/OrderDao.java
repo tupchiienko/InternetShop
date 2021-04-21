@@ -1,5 +1,6 @@
 package dao;
 
+import exception.OrderDataException;
 import model.Order;
 import model.User;
 
@@ -11,7 +12,7 @@ public interface OrderDao {
 
     Optional<Order> getById(int id);
 
-    Optional<Order> update(int id, Order newOrder);
+    Optional<Order> update(int id, Order newOrder) throws OrderDataException;
 
     Optional<Order> delete(int id);
 
