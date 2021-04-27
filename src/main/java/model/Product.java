@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Product {
     private int id;
@@ -9,9 +10,9 @@ public class Product {
     private int quantity;
 
     public Product(String name, BigDecimal price, int quantity) {
-        this.name = name;
-        this.price = price;
-        this.quantity = quantity;
+        setName(name);
+        setPrice(price);
+        setQuantity(quantity);
     }
 
     public int getId() {
@@ -27,6 +28,9 @@ public class Product {
     }
 
     public void setName(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Product name can not be empty.");
+        }
         this.name = name;
     }
 
@@ -35,6 +39,9 @@ public class Product {
     }
 
     public void setPrice(BigDecimal price) {
+        if (price.doubleValue() < 0) {
+            throw new IllegalArgumentException("Product price can not be less than zero.");
+        }
         this.price = price;
     }
 
@@ -43,6 +50,32 @@ public class Product {
     }
 
     public void setQuantity(int quantity) {
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Product quantity can not be less than zero.");
+        }
         this.quantity = quantity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return name.equals(product.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }
