@@ -14,9 +14,5 @@ public interface ProductService {
 
     Response<Product> deleteProduct(String name);
 
-    Response<Product> changeProductName(String oldName, String newName);
-
-    Response<Product> changeProductPrice(String name, BigDecimal price);
-
-    Response<Product> changeProductQuantity(String name, int quantity);
+    Response<Product> updateProduct(String name, Product newProduct);
 }

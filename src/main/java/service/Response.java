@@ -22,4 +22,13 @@ public class Response<T> {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        return "Response{" +
+                "value=" + value +
+                ", isSuccessful=" + isSuccessful +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }
