@@ -2,6 +2,7 @@ package view.impl;
 
 import model.User;
 import model.UserRole;
+import service.Response;
 import service.UserService;
 import view.Menu;
 
@@ -35,25 +36,27 @@ public class LoginMenu implements Menu {
         System.exit(0);
     }
 
-    private boolean loginCheck(String login, String password) {
-        return userService.login(login, password).isSuccessful();
-    }
+//    private boolean loginCheck(String login, String password) {
+//        return userService.login(login, password).isSuccessful();
+//    }
 
     private void loginSubMenu() {
+        Response<User> userResponse;
         Scanner scanner = new Scanner(System.in);
         System.out.println("input login:");
         String login = scanner.nextLine();
         System.out.println("input password:");
         String password = scanner.nextLine();
-        if (loginCheck(login, password)) {
-            User user = userService.login(login, password).getValue();
+        userResponse=userService.login(login,password);
+        if (userResponse.isSuccessful()) {
+            User user = userResponse.getValue();
             if (user.getUserRole() == UserRole.ADMIN) {
                 adminMainMenu.show();
             } else {
                 userMainMenu.show();
             }
         } else {
-            System.out.println("Wrong username/pasword");
+            System.out.println("Wrong username/password");
             show();
         }
     }
