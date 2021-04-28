@@ -14,12 +14,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response<Product> getProduct(int id) {
-        return null;
-    }
-
-    @Override
-    public Response<Map<Integer, Product>> getAllProducts() {
+    public Response<Map<String, Product>> getAllProducts() {
         return null;
     }
 
@@ -29,22 +24,22 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Response<Product> deleteProduct(int id) {
+    public Response<Product> deleteProduct(String name) {
         return null;
     }
 
     @Override
-    public Response<Product> changeProductName(int id, String name) {
+    public Response<Product> changeProductName(String oldName, String newName) {
         return null;
     }
 
     @Override
-    public Response<Product> changeProductPrice(int id, BigDecimal price) {
+    public Response<Product> changeProductPrice(String name, BigDecimal price) {
         return null;
     }
 
     @Override
-    public Response<Product> changeProductQuantity(int id, int quantity) {
+    public Response<Product> changeProductQuantity(String name, int quantity) {
         return null;
     }
 }

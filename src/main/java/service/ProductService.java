@@ -8,17 +8,15 @@ import java.util.Map;
 public interface ProductService {
     Response<Product> getProduct(String name);
 
-    Response<Product> getProduct(int id);
-
-    Response<Map<Integer, Product>> getAllProducts();
+    Response<Map<String, Product>> getAllProducts();
 
     Response<Product> addProduct(Product product);
 
-    Response<Product> deleteProduct(int id);
+    Response<Product> deleteProduct(String name);
 
-    Response<Product> changeProductName(int id, String name);
+    Response<Product> changeProductName(String oldName, String newName);
 
-    Response<Product> changeProductPrice(int id, BigDecimal price);
+    Response<Product> changeProductPrice(String name, BigDecimal price);
 
-    Response<Product> changeProductQuantity(int id, int quantity);
+    Response<Product> changeProductQuantity(String name, int quantity);
 }
