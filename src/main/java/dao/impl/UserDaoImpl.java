@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class UserDaoImpl implements UserDao {
     @Override
-    public Optional<User> add(User user) throws UserDataException {
+    public Optional<User> add(User user) {
         /*
         Перевірити наявність користувача в мапі userMap:
            1. Якщо такий користувач є, викинути new UserDataException з повідомленням,
@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public Optional<User> update(String username, User newUser) throws UserDataException {
+    public Optional<User> update(String username, User newUser) {
         /*
         Перевірити наявність користувача з username в мапі userMap:
            1. Якщо такого користувача немає, викинути new UserDataException з повідомленням,

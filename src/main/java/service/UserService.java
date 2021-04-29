@@ -24,5 +24,5 @@ public interface UserService {
 
     Response<User> changeUsername(String username, String newUsername);
 
-    Response<User> changePassword(String username, String newPassword);
+    Response<User> changePassword(String username, String oldPassword, String newPassword);
 }
