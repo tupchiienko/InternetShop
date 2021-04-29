@@ -4,14 +4,18 @@ import dao.UserDao;
 import model.User;
 import model.UserRole;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 
 import static java.util.stream.Collectors.toMap;
 
 public class UserDaoImpl implements UserDao {
-    private Map<String, User> userMap = new HashMap<>();
+    private Map<String, User> userMap;
+
+    public UserDaoImpl() {
+        userMap = new TreeMap<>();
+    }
 
     @Override
     public Optional<User> add(User user) {
@@ -25,23 +29,30 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public Optional<User> update(String username, User newUser) {
-          return Optional.ofNullable(  userMap.replace(username, newUser));
+        Optional<User> deletedUser = delete(username);
+        if (deletedUser.isPresent()) {
+            add(newUser);
+        }
+        return deletedUser;
+
     }
 
     @Override
     public Optional<User> delete(String username) {
-        return  Optional.ofNullable(userMap.remove(username));
+        return Optional.ofNullable(userMap.remove(username));
     }
 
     @Override
     public Map<String, User> getByRole(UserRole userRole) {
-       return userMap.values().stream()
+        return userMap.values().stream()
                 .filter(user -> user.getUserRole().equals(userRole))
                 .collect(toMap(User::getUsername, User -> User));
     }
 
     @Override
     public Map<String, User> getAllUsers() {
-        return userMap;
+        Map<String, User> copyUserMap = new TreeMap<>();
+        copyUserMap.putAll(userMap);
+        return copyUserMap;
     }
 }
