@@ -13,20 +13,20 @@ public class LoginMenu implements Menu {
     private AdminMainMenu adminMainMenu;
 
     private UserService userService;
-    private String[] items = {"1.Login", "2.Register"};
+    private String[] items = {"1.Login", "2.Register", "0. Exit"};
     private Scanner scanner;
 
     @Override
     public void show() {
         showItems(items);
-        System.out.println("0. Exit");
         scanner = new Scanner(System.in);
         while (true) {
             int choice = scanner.nextInt();
             switch (choice) {
+                case 0 -> exit();
                 case 1 -> loginSubMenu();
                 case 2 -> registerSubMenu();
-                case 0 -> exit();
+
             }
         }
     }
@@ -36,9 +36,9 @@ public class LoginMenu implements Menu {
         System.exit(0);
     }
 
-//    private boolean loginCheck(String login, String password) {
-//        return userService.login(login, password).isSuccessful();
-//    }
+    private boolean loginCheck(String login, String password) {
+        return userService.login(login, password).isSuccessful();
+    }
 
     private void loginSubMenu() {
         Response<User> userResponse;

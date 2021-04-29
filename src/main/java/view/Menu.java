@@ -6,9 +6,10 @@ public interface Menu {
     void exit();
 
     default void showItems(String[] items) {
+        System.out.println("-------------");
         for (String item : items) {
-            System.out.println("-------------");
             System.out.println(item);
         }
+        System.out.println("-------------");
     }
 }
