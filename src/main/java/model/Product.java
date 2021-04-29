@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class Product {
-    private int id;
     private String name;
     private BigDecimal price;
     private int quantity;
@@ -15,20 +14,12 @@ public class Product {
         setQuantity(quantity);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
-        if (name == null || name.isEmpty()) {
+        if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Product name can not be empty.");
         }
         this.name = name;
@@ -72,8 +63,7 @@ public class Product {
     @Override
     public String toString() {
         return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "name='" + name + '\'' +
                 ", price=" + price +
                 ", quantity=" + quantity +
                 '}';

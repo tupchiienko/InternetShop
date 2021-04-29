@@ -1,75 +1,51 @@
 package dao.impl;
 
 import dao.ProductDao;
-import exception.ProductDataException;
 import model.Product;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
 public class ProductDaoImpl implements ProductDao {
-    private final Map<Integer, Product> productMap;
+    private final Map<String, Product> productMap;
 
     public ProductDaoImpl() {
         this.productMap = new TreeMap<>();
+        add(new Product("Cheese - Comtomme", new BigDecimal("17.05"), 53));
+        add(new Product("Pepper - Green, Chili", new BigDecimal("7.41"), 78));
+        add(new Product("Pork - Bones", new BigDecimal("34.64"), 89));
+        add(new Product("Wine - Zinfandel Rosenblum", new BigDecimal("32.57"), 40));
+        add(new Product("Pastry - Chocolate Marble Tea", new BigDecimal("35.76"), 16));
     }
 
     @Override
-    public Optional<Product> add(Product product) throws ProductDataException {
-        /*
-        Перевірити наявність продукту в мапі productMap (containsValue()):
-           1. Якщо такий продукт є, викидуємо new ProductDataException з повідомленням,
-              що описує виключну ситуацію на англійській мові, наприклад "Product already exist";
-           2. Якщо такого продукту немає, присвоюємо id продукту (беремо останній іd з мапи + 1)
-              і записуємо його в productMap під цим id (put()), повертаємо (return) доданий продукт в Optional (Optional.of());
-         */
-        return Optional.empty();
+    public Optional<Product> add(Product product) {
+        return Optional.ofNullable(productMap.put(product.getName(), product));
     }
 
     @Override
-    public Optional<Product> getById(int id) {
-        /*
-        Отримуємо продукт із productMap по id (get()) повертаємо отриманий результат в Optional (Optional.ofNullable());
-         */
-        return Optional.empty();
+    public Optional<Product> getByName(String name) {
+        return Optional.ofNullable(productMap.get(name));
     }
 
     @Override
-    public Optional<Product> getByName(String productName) {
-        /*
-        1. Отримуємо продукт по назві:
-                Перебираємо всі значення productMap і порівнюємо назви продуктів з productName,
-                якщо співпало, повертаємо Product в Optional (Optional.of());
-        2. Повертаємо Optional.empty();
-         */
-        return Optional.empty();
+    public Optional<Product> update(String name, Product newProduct) {
+        Optional<Product> deletedProduct = delete(name);
+        if (deletedProduct.isPresent()) {
+            add(newProduct);
+        }
+        return deletedProduct;
     }
 
     @Override
-    public Optional<Product> update(int id, Product newProduct) throws ProductDataException {
-        /*
-        Перевірити наявність продукту з id в мапі productMap (containsKey()):
-           1. Якщо такого продукту немає, викидуємо new ProductDataException з повідомленням,
-              що описує виключну ситуацію;
-           2. Якщо є, оновлюємо значення в мапі (put()), повертаємо в Optional результат операції put();
-         */
-        return Optional.empty();
+    public Optional<Product> delete(String name) {
+        return Optional.ofNullable(productMap.remove(name));
     }
 
     @Override
-    public Optional<Product> delete(int id) {
-        /*
-        Видаляємо продукт з мапи (remove()), повернути в Optional результат операції remove();
-         */
-        return Optional.empty();
-    }
-
-    @Override
-    public Map<Integer, Product> getAllProducts() {
-        /*
-        Повертаємо копію productMap (наприклад, new TreeMap(productMap))
-         */
-        return null;
+    public Map<String, Product> getAllProducts() {
+        return new TreeMap<>(productMap);
     }
 }
