@@ -12,7 +12,7 @@ public interface OrderDao {
 
     Optional<Order> getById(int id);
 
-    Optional<Order> update(int id, Order newOrder) throws OrderDataException;
+    Optional<Order> update(int id, Order newOrder);
 
     Optional<Order> delete(int id);
 

@@ -20,7 +20,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<Order> update(int id, Order newOrder) throws OrderDataException {
+    public Optional<Order> update(int id, Order newOrder) {
         return Optional.empty();
     }
 

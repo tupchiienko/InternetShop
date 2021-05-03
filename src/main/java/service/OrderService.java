@@ -18,7 +18,7 @@ public interface OrderService {
 
     Response<Order> changeOrderStatus(int id, OrderStatus orderStatus);
 
-    Response<Order> addProductToOrder(int id, Product product);
+    Response<Order> addProductToOrder(int id, Product product, int count);
 
     Response<Order> removeProductFormOrder(int id, Product product);
 }
