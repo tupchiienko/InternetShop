@@ -48,8 +48,8 @@ public class Order {
     }
 
     public void removeProduct(Product product) {
-        productMap.remove(product);
         totalPrice = totalPrice.subtract(product.getPrice().multiply(new BigDecimal(productMap.get(product))));
+        productMap.remove(product);
     }
 
     public void changeProductCount(Product product, int newCount) {
