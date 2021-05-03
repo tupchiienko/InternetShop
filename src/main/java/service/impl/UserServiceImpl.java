@@ -2,9 +2,9 @@ package service.impl;
 
 import dao.impl.UserDaoImpl;
 import exception.UserAccessException;
+import model.User;
 import model.UserRole;
 import service.Response;
-import model.User;
 import service.UserService;
 
 import java.util.Map;
@@ -110,14 +110,18 @@ public class UserServiceImpl implements UserService {
     public Response<User> changeUsername(String username, String newUsername) {
         Optional<User> user = userDao.getByUsername(username);
         if (user.isPresent()) {
-            User userChange = user.get();
-            try {
-                userChange.setUsername(newUsername);
-            } catch (IllegalArgumentException e) {
-                return new Response<>(null, false, e.getMessage());
+            if (userDao.getByUsername(newUsername).isEmpty()) {
+                User userChange = user.get();
+                try {
+                    userChange.setUsername(newUsername);
+                } catch (IllegalArgumentException e) {
+                    return new Response<>(null, false, e.getMessage());
+                }
+                userDao.update(username, userChange);
+                return new Response<>(userChange, true, "Username changed to '" + newUsername + '\'');
+            } else {
+                return new Response<>(null, false, "Username already exist");
             }
-            userDao.update(username, userChange);
-            return new Response<>(userChange, true, "Username changed to '"+ newUsername + '\'');
         }
         return new Response<>(null, false, "User '" + username + "' does not exist");
     }
