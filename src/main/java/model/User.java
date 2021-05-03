@@ -37,7 +37,7 @@ public class User {
         if (username.length() > 32 || username.length() < 4) {
             throw new IllegalArgumentException("Username length must be from 4 to 32.");
         }
-        if (!username.matches("[a-zA-Z0-9_]")) {
+        if (!username.matches("([A-Za-z0-9])\\w+")) {
             throw new IllegalArgumentException("Username can contain only letters(a-z), numbers(0-9), symbol( _ ).");
         }
         this.username = username;
@@ -47,7 +47,7 @@ public class User {
         if (password.length() > 32 || password.length() < 8) {
             throw new IllegalArgumentException("Password length must be from 8 to 32.");
         }
-        if (!password.matches("[a-zA-Z0-9_]")) {
+        if (!password.matches("([A-Za-z0-9])\\w+")) {
             throw new IllegalArgumentException("Password can contain only letters(a-z), numbers(0-9), symbol( _ ).");
         }
         this.password = password;
