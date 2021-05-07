@@ -2,6 +2,8 @@ package view.impl;
 
 import model.User;
 import model.UserRole;
+import service.OrderService;
+import service.ProductService;
 import service.Response;
 import service.UserService;
 import view.Menu;
@@ -9,17 +11,24 @@ import view.Menu;
 import java.util.Scanner;
 
 public class LoginMenu implements Menu {
-    private UserMainMenu userMainMenu;
-    private AdminMainMenu adminMainMenu;
+    private final String[] items = {"1.Login", "2.Register", "0. Exit"};
 
-    private UserService userService;
-    private String[] items = {"1.Login", "2.Register", "0. Exit"};
-    private Scanner scanner;
+    private final OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
+
+    public LoginMenu(OrderService orderService, UserService userService, ProductService productService) {
+        this.orderService = orderService;
+        this.userService = userService;
+        this.productService = productService;
+    }
 
     @Override
     public void show() {
         showItems(items);
-        scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
+
+        //noinspection InfiniteLoopStatement
         while (true) {
             int choice = scanner.nextInt();
             switch (choice) {
@@ -36,10 +45,6 @@ public class LoginMenu implements Menu {
         System.exit(0);
     }
 
-    private boolean loginCheck(String login, String password) {
-        return userService.login(login, password).isSuccessful();
-    }
-
     private void loginSubMenu() {
         Response<User> userResponse;
         Scanner scanner = new Scanner(System.in);
@@ -51,9 +56,9 @@ public class LoginMenu implements Menu {
         if (userResponse.isSuccessful()) {
             User user = userResponse.getValue();
             if (user.getUserRole() == UserRole.ADMIN) {
-                adminMainMenu.show();
+                new AdminMainMenu(this, userService, orderService, productService).show();
             } else {
-                userMainMenu.show();
+                new UserMainMenu(this, user, orderService, productService).show();
             }
         } else {
             System.out.println("Wrong username/password");
@@ -70,15 +75,15 @@ public class LoginMenu implements Menu {
         System.out.println("repeat password:");
         String passwordRepeat = scanner.nextLine();
         if (!passwordRepeat.equals(password)) {
-            System.out.println("Password mismatch!\nTry again.2");
+            System.out.println("Password mismatch! Try again");
             registerSubMenu();
         } else {
-            User user = new User(login, password, UserRole.USER);
-            //add user to map (key - login, value - user
-            if (userService.register(login, password).isSuccessful()) {
-                System.out.println("user registered successfully");
+            Response<User> registerResponse = userService.register(login, password);
+            if (registerResponse.isSuccessful()) {
+                new UserMainMenu(this, registerResponse.getValue(), orderService, productService).show();
             } else {
-                //exception
+                System.out.println(registerResponse.getMessage());
+                registerSubMenu();
             }
         }
     }
