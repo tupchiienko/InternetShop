@@ -13,11 +13,11 @@ public class ProductDaoImpl implements ProductDao {
 
     public ProductDaoImpl() {
         this.productMap = new TreeMap<>();
-        add(new Product("Cheese - Comtomme", new BigDecimal("17.05"), 53));
-        add(new Product("Pepper - Green, Chili", new BigDecimal("7.41"), 78));
-        add(new Product("Pork - Bones", new BigDecimal("34.64"), 89));
-        add(new Product("Wine - Zinfandel Rosenblum", new BigDecimal("32.57"), 40));
-        add(new Product("Pastry - Chocolate Marble Tea", new BigDecimal("35.76"), 16));
+        add(new Product("Cheese", new BigDecimal("20.00"), 53));
+        add(new Product("Beer", new BigDecimal("3.50"), 78));
+        add(new Product("Choco", new BigDecimal("5.00"), 89));
+        add(new Product("Wine", new BigDecimal("200.00"), 40));
+        add(new Product("Tea", new BigDecimal("10.00"), 16));
     }
 
     @Override

@@ -69,13 +69,25 @@ public class Order {
         return Objects.hash(id);
     }
 
+    private String formatProductMap(Map<Product, Integer> productMap) {
+        StringBuilder stringBuilder = new StringBuilder();
+        int counter = 0;
+        for (Map.Entry<Product, Integer> productIntegerEntry : productMap.entrySet()) {
+            stringBuilder
+                    .append(productIntegerEntry.getKey().getName())
+                    .append('(')
+                    .append(productIntegerEntry.getValue())
+                    .append(')');
+            if (counter != productMap.size() - 1) {
+                stringBuilder.append(',');
+            }
+            counter++;
+        }
+        return stringBuilder.toString();
+    }
+
     @Override
     public String toString() {
-        return "Order{" +
-                "id=" + id +
-                ", user=" + user +
-                ", totalPrice=" + totalPrice +
-                ", orderStatus=" + orderStatus +
-                '}';
+        return " " + id + " | " + user.getUsername() + " | " + totalPrice + "$ | " + formatProductMap(productMap);
     }
 }
