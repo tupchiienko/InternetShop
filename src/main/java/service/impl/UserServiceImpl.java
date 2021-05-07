@@ -23,7 +23,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userDao.getByUsername(username);
         if (user.isPresent()) {
             User userObj = user.get();
-            if (user.get().getPassword().equals(password)) {
+            if (userObj.isBlocked()) {
+                return new Response<>(null, false, "User is blocked");
+            }
+            if (userObj.getPassword().equals(password)) {
                 return new Response<>(userObj, true, userObj.toString());
             }
         }
