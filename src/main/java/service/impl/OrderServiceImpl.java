@@ -25,7 +25,7 @@ public class OrderServiceImpl implements OrderService {
         return byIdOptional
                 .map(value -> new Response<>(value, true, value.toString()))
                 .orElseGet(() -> new Response<>(null, false,
-                        "Order with id `" + id + " does not exist"));
+                        "Order with id '" + id + "' does not exist"));
     }
 
     @Override
@@ -33,17 +33,17 @@ public class OrderServiceImpl implements OrderService {
         Optional<Order> deletedOrderOptional = orderDao.delete(id);
         return deletedOrderOptional
                 .map(value -> new Response<>(value, true,
-                        "Order with id `" + id + " deleted successfully"))
+                        "Order with id '" + id + "' deleted successfully"))
                 .orElseGet(() -> new Response<>(null, false,
-                        "Order with id `" + id + " does not exist"));
+                        "Order with id '" + id + "' does not exist"));
     }
 
     @Override
     public Response<Map<Integer, Order>> getOrdersByUser(User user) {
         Map<Integer, Order> byUserMap = orderDao.getByUser(user);
         if (byUserMap.isEmpty()) {
-            return new Response<>(null, false,
-                    "User '" + user.getUsername() + "' has no orders");
+            return new Response<>(byUserMap, false,
+                    "User has no orders");
         }
         return new Response<>(byUserMap, true,
                 "User has orders with id '" + byUserMap.keySet() + "'");
@@ -76,11 +76,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Response<Order> addProductToOrder(int id, Product product, int count) {
+    public Response<Order> addProductToOrder(int id, Product product, int quantity) {
+        if (quantity < 0) {
+            return new Response<>(null, false, "Quantity can not be lower than zero");
+        }
         Optional<Order> orderOptional = orderDao.getById(id);
         if (orderOptional.isPresent()) {
             Order orderToChange = orderOptional.get();
-            orderToChange.addProduct(product, count);
+            orderToChange.addProduct(product, quantity);
             orderDao.update(id, orderToChange);
             return new Response<>(orderToChange, true,
                     "Order '" + id + "' successfully updated");
