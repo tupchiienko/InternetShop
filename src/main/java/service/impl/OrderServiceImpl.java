@@ -20,25 +20,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Response<Order> getOrder(int id) {
-        Optional<Order> byIdOptional = orderDao.getById(id);
-        return byIdOptional
-                .map(value -> new Response<>(value, true, value.toString()))
-                .orElseGet(() -> new Response<>(null, false,
-                        "Order with id '" + id + "' does not exist"));
-    }
-
-    @Override
-    public Response<Order> deleteOrder(int id) {
-        Optional<Order> deletedOrderOptional = orderDao.delete(id);
-        return deletedOrderOptional
-                .map(value -> new Response<>(value, true,
-                        "Order with id '" + id + "' deleted successfully"))
-                .orElseGet(() -> new Response<>(null, false,
-                        "Order with id '" + id + "' does not exist"));
-    }
-
-    @Override
     public Response<Map<Integer, Order>> getOrdersByUser(User user) {
         Map<Integer, Order> byUserMap = orderDao.getByUser(user);
         if (byUserMap.isEmpty()) {
@@ -47,6 +28,17 @@ public class OrderServiceImpl implements OrderService {
         }
         return new Response<>(byUserMap, true,
                 "User has orders with id '" + byUserMap.keySet() + "'");
+    }
+
+    @Override
+    public Response<Map<Integer, Order>> getOrdersByOrderStatus(OrderStatus orderStatus) {
+        Map<Integer, Order> byStatusMap = orderDao.getByStatus(orderStatus);
+        if (byStatusMap.isEmpty()) {
+            return new Response<>(byStatusMap, false,
+                    "No orders " + orderStatus);
+        }
+        return new Response<>(byStatusMap, true,
+                "Success");
     }
 
     @Override

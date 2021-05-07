@@ -3,7 +3,6 @@ package view.impl;
 import model.User;
 import service.OrderService;
 import service.ProductService;
-import service.UserService;
 import view.Menu;
 
 import java.util.Scanner;

@@ -11,6 +11,7 @@ import service.UserService;
 import view.Menu;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -58,34 +59,22 @@ public class AdminMainMenu implements Menu {
         loginMenu.show();
     }
 
-    //block\unblock user
     private void userMenu() {
         showItems(itemsForUserMenu);
         scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
+        scanner.nextLine();
         switch (choice) {
             case 1 -> {
-                while (true) {
-                    System.out.println("All user: " + userService.getAllUsers().getMessage());
-                    System.out.print("Enter username for blocking user: ");
-                    Response<User> userResponse = userService.blockUser(scanner.nextLine());
-                    System.out.println(userResponse.getMessage());
-                    if (userResponse.isSuccessful()) {
-                        break;
-                    }
-                }
+                System.out.print("Enter username for blocking user: ");
+                Response<User> userResponse = userService.blockUser(scanner.nextLine());
+                System.out.println(userResponse.getMessage());
                 userMenu();
             }
             case 2 -> {
-                while (true) {
-                    System.out.println("All user: " + userService.getAllUsers().getMessage());
-                    System.out.print("Enter username for unblocking user: ");
-                    Response<User> userResponse = userService.unblockUser(scanner.nextLine());
-                    System.out.println(userResponse.getMessage());
-                    if (userResponse.isSuccessful()) {
-                        break;
-                    }
-                }
+                System.out.print("Enter username for unblocking user: ");
+                Response<User> userResponse = userService.unblockUser(scanner.nextLine());
+                System.out.println(userResponse.getMessage());
                 userMenu();
             }
             case 0 -> show();
@@ -98,26 +87,24 @@ public class AdminMainMenu implements Menu {
         showItems(itemsForOrderMenu);
         scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
+        scanner.nextLine();
         switch (choice) {
             case 1 -> {
+                //noinspection LoopStatementThatDoesntLoop
                 while (true) {
-                    System.out.println("All user: " + userService.getAllUsers().getMessage());
-                    System.out.print("Enter username for check orders: ");
-                    String username = scanner.nextLine();
-                    Response<User> userResponse = userService.getUser(username);
-                    if (!userResponse.isSuccessful()) {
-                        continue;
-                    }
-                    Response<Map<Integer, Order>> orderMapResponse = orderService.getOrdersByUser(userResponse.getValue());
-                    System.out.println("'" + username + "' orders: " + orderMapResponse.getMessage());
+                    Response<Map<Integer, Order>> orderMapResponse =
+                            orderService.getOrdersByOrderStatus(OrderStatus.AWAITING_CONFIRMATION);
                     if (!orderMapResponse.isSuccessful()) {
-                        continue;
+                        System.out.println(orderMapResponse.getMessage());
+                        break;
                     }
                     Map<Integer, Order> orderMap = orderMapResponse.getValue();
+                    orderMap.values().forEach(System.out::println);
                     Response<Order> orderStatusResponse;
                     while (true) {
                         System.out.print("Choose order id to change: ");
                         int orderId = scanner.nextInt();
+                        scanner.nextLine();
                         Order order = orderMap.get(orderId);
                         if (order == null) {
                             System.out.println("Order '" + orderId + "' does not exist");
@@ -128,6 +115,7 @@ public class AdminMainMenu implements Menu {
                             showItems(itemsOrderStatus);
                             System.out.print("Choose status for order: ");
                             int orderStatusIndex = scanner.nextInt();
+                            scanner.nextLine();
                             if (orderStatusIndex == 1) {
                                 newStatus = OrderStatus.CONFIRMED;
                             } else if (orderStatusIndex == 2) {
@@ -153,19 +141,35 @@ public class AdminMainMenu implements Menu {
         }
     }
 
-    //Edit existing product details. Add new product.
     private void productMenu() {
+        System.out.println("-".repeat(50));
+        Collection<Product> productCollection = productService.getAllProducts().getValue().values();
+        productCollection.forEach(System.out::println);
+        System.out.println("-".repeat(50));
         showItems(itemsForProductMenu);
         scanner = new Scanner(System.in);
         int choice = scanner.nextInt();
+        scanner.nextLine();
         switch (choice) {
             case 1 -> {
-                System.out.println("All products: " + productService.getAllProducts().getValue());
+                System.out.println("-".repeat(50));
+                productCollection.forEach(System.out::println);
+                System.out.println("-".repeat(50));
                 System.out.print("Enter product name for edit: ");
                 String productName = scanner.nextLine();
+                Response<Product> productResponse = productService.getProduct(productName);
+                if (!productResponse.isSuccessful()) {
+                    System.out.println(productResponse.getMessage());
+                    productMenu();
+                }
+                //noinspection InfiniteLoopStatement
                 while (true) {
+                    System.out.println("-".repeat(50));
+                    System.out.println(productResponse.getValue());
+                    System.out.println("-".repeat(50));
                     showItems(itemsForEditProduct);
                     int chosenItem = scanner.nextInt();
+                    scanner.nextLine();
                     Response<Product> changeProductResponse;
                     switch (chosenItem) {
                         case 1 -> {
@@ -173,54 +177,54 @@ public class AdminMainMenu implements Menu {
                             String newProductName = scanner.nextLine();
                             changeProductResponse = productService.changeProductName(productName, newProductName);
                             System.out.println(changeProductResponse.getMessage());
-                            continue;
                         }
                         case 2 -> {
                             System.out.print("Enter new product price: ");
-                            double newProductPrice = scanner.nextDouble();
+                            String newProductPrice = scanner.nextLine();
                             changeProductResponse = productService.changeProductPrice(productName, new BigDecimal(newProductPrice));
                             System.out.println(changeProductResponse.getMessage());
-                            continue;
                         }
                         case 3 -> {
-                            System.out.println("Enter new product quantity: ");
+                            System.out.print("Enter new product quantity: ");
                             int newProductQuantity = scanner.nextInt();
+                            scanner.nextLine();
                             changeProductResponse = productService.changeProductQuantity(productName, newProductQuantity);
                             System.out.println(changeProductResponse.getMessage());
-                            continue;
                         }
+                        case 0 -> productMenu();
                     }
-                    break;
                 }
             }
             case 2 -> {
+                //noinspection InfiniteLoopStatement
                 while (true) {
                     System.out.print("Enter new product name: ");
                     String name = scanner.nextLine();
                     System.out.print("Enter product price: ");
-                    double price = scanner.nextDouble();
+                    String price = scanner.nextLine();
                     System.out.print("Enter product quantity: ");
                     int quantity = scanner.nextInt();
+                    scanner.nextLine();
                     try {
                         Product newProduct = new Product(name, new BigDecimal(price), quantity);
                         Response<Product> productResponse = productService.addProduct(newProduct);
                         System.out.println(productResponse.getMessage());
-                        if (productResponse.isSuccessful()) {
-                            break;
-                        }
+                        productMenu();
                     } catch (IllegalArgumentException e) {
                         System.out.println(e.getMessage());
                     }
                 }
             }
             case 3 -> {
+                //noinspection InfiniteLoopStatement
                 while (true) {
+                    System.out.println("-".repeat(50));
+                    productCollection.forEach(System.out::println);
+                    System.out.println("-".repeat(50));
                     System.out.print("Enter product name for delete: ");
                     Response<Product> productDeleteResponse = productService.deleteProduct(scanner.nextLine());
                     System.out.println(productDeleteResponse.getMessage());
-                    if (productDeleteResponse.isSuccessful()) {
-                        break;
-                    }
+                    productMenu();
                 }
             }
             case 0 -> show();

@@ -7,7 +7,6 @@ import model.UserRole;
 import service.Response;
 import service.UserService;
 
-import java.util.Map;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
@@ -50,38 +49,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response<User> getUser(String username) {
-        Optional<User> user = userDao.getByUsername(username);
-        return user.map(value -> new Response<>(value, true, value.toString()))
-                .orElse(new Response<>(null, false, "User '" + username + "' does not exist"));
-    }
-
-    @Override
-    public Response<Map<String, User>> getAllUsers() {
-        Map<String, User> userMap = userDao.getAllUsers();
-        if (userMap.isEmpty()) {
-            return new Response<>(null, false, "User database is empty");
-        }
-        return new Response<>(userMap, true, userMap.values().toString());
-    }
-
-    @Override
-    public Response<Map<String, User>> getAllUsersByRole(UserRole userRole) {
-        Map<String, User> userMap = userDao.getByRole(userRole);
-        if (userMap.isEmpty()) {
-            return new Response<>(null, false, "User database is empty");
-        }
-        return new Response<>(userMap, true, userMap.values().toString());
-    }
-
-    @Override
-    public Response<User> deleteUser(String username) {
-        Optional<User> user = userDao.delete(username);
-        return user.map(value -> new Response<>(value, true, value.toString()))
-                .orElse(new Response<>(null, false, "User '" + username + "' does not exist"));
-    }
-
-    @Override
     public Response<User> blockUser(String username) {
         Optional<User> user = userDao.getByUsername(username);
         if (user.isPresent()) {
@@ -105,46 +72,6 @@ public class UserServiceImpl implements UserService {
             userToBlock.unblock();
             userDao.update(username, userToBlock);
             return new Response<>(userToBlock, true, "User '" + username + "' is unblocked");
-        }
-        return new Response<>(null, false, "User '" + username + "' does not exist");
-    }
-
-    @Override
-    public Response<User> changeUsername(String username, String newUsername) {
-        Optional<User> user = userDao.getByUsername(username);
-        if (user.isPresent()) {
-            if (userDao.getByUsername(newUsername).isEmpty()) {
-                User userChange = user.get();
-                try {
-                    userChange.setUsername(newUsername);
-                } catch (IllegalArgumentException e) {
-                    return new Response<>(null, false, e.getMessage());
-                }
-                userDao.update(username, userChange);
-                return new Response<>(userChange, true, "Username changed to '" + newUsername + '\'');
-            } else {
-                return new Response<>(null, false, "Username already exist");
-            }
-        }
-        return new Response<>(null, false, "User '" + username + "' does not exist");
-    }
-
-    @Override
-    public Response<User> changePassword(String username, String oldPassword, String newPassword) {
-        Optional<User> user = userDao.getByUsername(username);
-        if (user.isPresent()) {
-            User userChange = user.get();
-            if (userChange.getPassword().equals(oldPassword)) {
-                try {
-                    userChange.setPassword(newPassword);
-                } catch (IllegalArgumentException e) {
-                    return new Response<>(null, false, e.getMessage());
-                }
-                userDao.update(username, userChange);
-                return new Response<>(userChange, true, "User password changed");
-            } else {
-                return new Response<>(null, false, "You enter incorrect password");
-            }
         }
         return new Response<>(null, false, "User '" + username + "' does not exist");
     }

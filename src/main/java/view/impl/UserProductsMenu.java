@@ -6,7 +6,6 @@ import model.Product;
 import service.OrderService;
 import service.ProductService;
 import service.Response;
-import service.UserService;
 import view.Menu;
 
 import java.util.*;
@@ -157,9 +156,12 @@ public class UserProductsMenu implements Menu {
                 }
                 case 2 -> {
                     while (true) {
-                        List<Product> productList = new ArrayList<>(order.getProductMap().keySet());
-                        for (int i = 0; i < productList.size(); i++) {
-                            System.out.println((i + 1) + "." + productList.get(i));
+                        Map<Product, Integer> productMap = order.getProductMap();
+                        List<Product> productList = new ArrayList<>(productMap.keySet());
+                        int counter = 0;
+                        for (Map.Entry<Product, Integer> productCountEntry : productMap.entrySet()) {
+                            System.out.println(++counter + "." + productCountEntry.getKey() +
+                                    " - " + productCountEntry.getValue());
                         }
                         System.out.print("Choose product number for change count: ");
                         int productNumber = scanner.nextInt();

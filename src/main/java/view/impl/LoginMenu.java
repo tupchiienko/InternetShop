@@ -11,7 +11,7 @@ import view.Menu;
 import java.util.Scanner;
 
 public class LoginMenu implements Menu {
-    private final String[] items = {"1.Login", "2.Register", "0. Exit"};
+    private final String[] items = {"1.Login", "2.Register", "0.Exit"};
 
     private final OrderService orderService;
     private final UserService userService;
@@ -27,7 +27,6 @@ public class LoginMenu implements Menu {
     public void show() {
         showItems(items);
         Scanner scanner = new Scanner(System.in);
-
         //noinspection InfiniteLoopStatement
         while (true) {
             int choice = scanner.nextInt();
@@ -35,7 +34,6 @@ public class LoginMenu implements Menu {
                 case 0 -> exit();
                 case 1 -> loginSubMenu();
                 case 2 -> registerSubMenu();
-
             }
         }
     }
@@ -48,9 +46,9 @@ public class LoginMenu implements Menu {
     private void loginSubMenu() {
         Response<User> userResponse;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("input login:");
+        System.out.print("Input login: ");
         String login = scanner.nextLine();
-        System.out.println("input password:");
+        System.out.print("Input password: ");
         String password = scanner.nextLine();
         userResponse = userService.login(login, password);
         if (userResponse.isSuccessful()) {
@@ -61,18 +59,18 @@ public class LoginMenu implements Menu {
                 new UserMainMenu(this, user, orderService, productService).show();
             }
         } else {
-            System.out.println("Wrong username/password");
+            System.out.println(userResponse.getMessage());
             show();
         }
     }
 
     private void registerSubMenu() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("input login:");
+        System.out.print("Input login: ");
         String login = scanner.nextLine();
-        System.out.println("input password:");
+        System.out.print("Input password: ");
         String password = scanner.nextLine();
-        System.out.println("repeat password:");
+        System.out.print("Repeat password: ");
         String passwordRepeat = scanner.nextLine();
         if (!passwordRepeat.equals(password)) {
             System.out.println("Password mismatch! Try again");

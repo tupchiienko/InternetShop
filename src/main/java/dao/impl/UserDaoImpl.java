@@ -8,13 +8,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
-import static java.util.stream.Collectors.toMap;
-
 public class UserDaoImpl implements UserDao {
-    private Map<String, User> userMap;
+    private final Map<String, User> userMap;
 
     public UserDaoImpl() {
         userMap = new TreeMap<>();
+        userMap.put("admin", new User("admin", "masterpass", UserRole.ADMIN));
+        userMap.put("user1", new User("user1", "12345678", UserRole.USER));
+        User blockedUser = new User("user2", "12345678", UserRole.USER);
+        blockedUser.block();
+        userMap.put("user2", blockedUser);
     }
 
     @Override
@@ -34,25 +37,10 @@ public class UserDaoImpl implements UserDao {
             add(newUser);
         }
         return deletedUser;
-
     }
 
     @Override
     public Optional<User> delete(String username) {
         return Optional.ofNullable(userMap.remove(username));
-    }
-
-    @Override
-    public Map<String, User> getByRole(UserRole userRole) {
-        return userMap.values().stream()
-                .filter(user -> user.getUserRole().equals(userRole))
-                .collect(toMap(User::getUsername, User -> User));
-    }
-
-    @Override
-    public Map<String, User> getAllUsers() {
-        Map<String, User> copyUserMap = new TreeMap<>();
-        copyUserMap.putAll(userMap);
-        return copyUserMap;
     }
 }

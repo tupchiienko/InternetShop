@@ -2,6 +2,7 @@ package dao.impl;
 
 import dao.OrderDao;
 import model.Order;
+import model.OrderStatus;
 import model.User;
 
 import java.util.Map;
@@ -46,7 +47,12 @@ public class OrderDaoImpl implements OrderDao {
         return orderMap.values().stream()
                 .filter(order -> order.getUser().equals(user))
                 .collect(toMap(Order::getId, Order -> Order));
+    }
 
-
+    @Override
+    public Map<Integer, Order> getByStatus(OrderStatus orderStatus) {
+        return orderMap.values().stream()
+                .filter(order -> order.getOrderStatus() == orderStatus)
+                .collect(toMap(Order::getId, order -> order));
     }
 }

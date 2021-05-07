@@ -8,11 +8,9 @@ import model.User;
 import java.util.Map;
 
 public interface OrderService {
-    Response<Order> getOrder(int id);
-
-    Response<Order> deleteOrder(int id);
-
     Response<Map<Integer, Order>> getOrdersByUser(User user);
+
+    Response<Map<Integer, Order>> getOrdersByOrderStatus(OrderStatus orderStatus);
 
     Response<Order> addOrder(Order order);
 
